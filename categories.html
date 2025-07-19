@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Категории</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: #000;
+        color: white;
+        min-height: 100vh;
+        padding: 20px;
+        box-sizing: border-box;
+        position: relative;
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 6px;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+        color: #ccc;
+        margin-bottom: 30px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 16px;
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .card:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+      }
+
+      .card-title {
+        font-size: 1rem;
+      }
+
+      .arrow {
+        position: absolute;
+        bottom: 12px;
+        right: 16px;
+        font-size: 1.1rem;
+        opacity: 0.6;
+      }
+
+      .bottom-image {
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 420px;
+        opacity: 0.8;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>База знаний</h1>
+    <div class="subtitle">📘 Сквозь призму ux - nix</div>
+
+    <div class="grid" id="categoryGrid"></div>
+
+    <img
+      src="assets/Vector.png"
+      alt="нижнее изображение"
+      class="bottom-image"
+    />
+
+    <script>
+      const categories = [
+        {
+          id: "materials",
+          title: "Полезные материалы",
+          link: "materials.html",
+        },
+        {
+          id: "articles",
+          title: "Cтатьи",
+          link: "articles.html",
+        },
+        {
+          id: "books",
+          title: "Книги",
+          link: "books.html",
+        },
+      ];
+
+      const container = document.getElementById("categoryGrid");
+
+      categories.forEach((cat) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.onclick = () => (window.location.href = cat.link);
+
+        card.innerHTML = `
+        <div class="card-title">${cat.title}</div>
+        <div class="arrow">\u2192</div>
+      `;
+
+        container.appendChild(card);
+      });
+    </script>
+  </body>
+</html>
