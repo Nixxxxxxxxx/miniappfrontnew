@@ -10,7 +10,7 @@ async function checkSubscription() {
 
   try {
     const response = await fetch(
-      "https://backminiapp.onrender.com/check-subscription",
+      "https://tg-bot-0bbn.onrender.com/check-subscription",
       {
         method: "POST",
         headers: {
