@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Telegram WebApp</title>
+    <title>Проверка подписки</title>
     <style>
       html,
       body {
@@ -18,7 +18,7 @@
       }
 
       .wrapper {
-        display: none;
+        display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
@@ -73,50 +73,16 @@
         z-index: 0;
       }
 
-      .loading {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background-color: #000;
-        z-index: 10000;
-      }
-
-      .loader {
-        border: 5px solid rgba(255, 255, 255, 0.1);
-        border-top: 5px solid white;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        animation: spin 1s linear infinite;
-      }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
       @media (max-width: 400px) {
         h1 {
           font-size: 1.8rem;
         }
-
         .btn {
           font-size: 0.85rem;
           padding: 10px 14px;
           width: 130px;
           height: 130px;
         }
-
         .image-corner {
           width: 35vw;
         }
@@ -124,29 +90,12 @@
     </style>
   </head>
   <body>
-    <!-- Загрузка -->
-    <div class="loading" id="loading-screen">
-      <div class="loader"></div>
-    </div>
-
-    <!-- Приветствие -->
-    <div class="wrapper" id="start-screen">
-      <h1>Добро пожаловать</h1>
-      <p>Нажмите кнопку, чтобы продолжить</p>
-      <div class="buttons">
-        <button class="btn" onclick="showSubscribeScreen()">
-          Проверить подписку
-        </button>
-      </div>
-    </div>
-
-    <!-- Подписка -->
-    <div class="wrapper" id="subscribe-screen">
+    <div class="wrapper">
       <h1>Проверка<br />на подписку</h1>
       <p>Сделано с целью, чтобы как-то поддержать автора</p>
 
       <div class="buttons">
-        <button class="btn" onclick="checkSubscription()">
+        <button class="btn" id="checkBtn">
           Проверить подписку
         </button>
         <a href="https://t.me/nix_ux_view" target="_blank">
@@ -162,24 +111,12 @@
     </div>
 
     <script>
-      window.addEventListener("load", () => {
-        if (
-          typeof Telegram === "undefined" ||
-          typeof Telegram.WebApp === "undefined"
-        ) {
-          alert("❗️ Откройте через Telegram WebApp.");
+      document.getElementById("checkBtn").addEventListener("click", async function () {
+        if (!window.Telegram || !Telegram.WebApp) {
+          alert("Откройте через Telegram WebApp");
+          return;
         }
 
-        // Скрываем загрузку и показываем старт
-        document.getElementById("loading-screen").style.display = "none";
-        document.getElementById("start-screen").style.display = "flex";
-      });
-      function showSubscribeScreen() {
-        document.getElementById("start-screen").style.display = "none";
-        document.getElementById("subscribe-screen").style.display = "flex";
-      }
-
-      async function checkSubscription() {
         const tg = Telegram.WebApp;
         const user = tg.initDataUnsafe?.user;
 
@@ -189,16 +126,13 @@
         }
 
         try {
-          const response = await fetch(
-            "https://tg-bot-0bbn.onrender.com/check-subscription",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ user_id: user.id }),
-            }
-          );
+          const response = await fetch("https://tg-bot-0bbn.onrender.com/check-subscription", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ user_id: user.id }),
+          });
 
           const data = await response.json();
 
@@ -211,7 +145,7 @@
           console.error("Ошибка при проверке подписки:", error);
           alert("Произошла ошибка при проверке. Попробуйте позже.");
         }
-      }
+      });
     </script>
   </body>
 </html>
