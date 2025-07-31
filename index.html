@@ -111,6 +111,9 @@
     </div>
 
     <script>
+      console.log("window.Telegram:", window.Telegram);
+      console.log("window.Telegram.WebApp:", window.Telegram?.WebApp);
+      alert(window.Telegram?.WebApp ? "WebApp инициализирован" : "WebApp НЕ инициализирован");
   document.getElementById("checkBtn").addEventListener("click", async function () {
     if (!window.Telegram || !Telegram.WebApp) {
       alert("Откройте через Telegram WebApp");
